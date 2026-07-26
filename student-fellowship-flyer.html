@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Fellowship</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:         #0F172A;
+      --violet:       #7C3AED;
+      --violet-light: #C4B5FD;
+      --violet-soft:  #EDE9FE;
+      --cream:        #FAFAF9;
+      --white:        #FFFFFF;
+      --text:         #1C1917;
+      --muted:        #78716C;
+      --border:       #E7E5E4;
+    }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── LOADING / ERROR ── */
+    .state-overlay {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      gap: 1rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .spinner {
+      width: 32px; height: 32px;
+      border: 3px solid var(--border);
+      border-top-color: var(--violet);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .error-box {
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      max-width: 480px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .error-box strong { color: #991B1B; display: block; margin-bottom: 0.4rem; }
+    .error-box p { color: #7F1D1D; font-size: 0.85rem; line-height: 1.5; }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--navy);
+      color: var(--white);
+      padding: 3rem 2rem 2.75rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='36' height='36' viewBox='0 0 36 36' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M18 10v16M10 18h16' stroke='%237C3AED' stroke-width='1.2' stroke-opacity='0.18' stroke-linecap='round'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 10% 60%, rgba(124,58,237,0.18) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 50% at 85% 15%, rgba(124,58,237,0.12) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 1; max-width: 660px; margin: 0 auto; }
+    .eyebrow {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--violet-light); margin-bottom: 0.9rem;
+    }
+    .church-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.1rem, 8vw, 3.6rem);
+      font-weight: 900; line-height: 1.04; color: #FFF;
+    }
+    .group-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1rem, 3.5vw, 1.4rem);
+      font-style: italic; font-weight: 700;
+      color: var(--violet-light); margin-top: 0.35rem;
+    }
+    .hero-rule { width: 2.75rem; height: 3px; background: var(--violet); border-radius: 2px; margin: 1.6rem 0; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 0.6rem 1rem; }
+    .meta-chip {
+      display: flex; align-items: center; gap: 0.45rem;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.11);
+      border-radius: 99px; padding: 0.32rem 0.85rem;
+      font-size: 0.83rem; font-weight: 500; color: rgba(255,255,255,0.88);
+    }
+    .meta-chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--violet); flex-shrink: 0; }
+
+    /* ── TOPIC ── */
+    .content { max-width: 660px; margin: 0 auto; padding: 2rem 1.5rem 0; }
+    .section-eyebrow {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.7rem;
+    }
+    .topic-card {
+      background: var(--white); border-radius: 14px;
+      border-left: 4px solid var(--violet); padding: 1.5rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 4px 20px rgba(0,0,0,0.05);
+    }
+    .topic-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.45rem, 4.5vw, 2rem);
+      font-style: italic; font-weight: 700;
+      color: var(--text); line-height: 1.2;
+    }
+    .topic-subtitle { font-size: 0.88rem; font-weight: 500; color: var(--violet); margin-top: 0.3rem; }
+    .topic-desc {
+      font-size: 0.93rem; color: var(--muted); line-height: 1.65;
+      margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--border);
+    }
+
+    /* ── SCHEDULE ── */
+    .schedule-section { max-width: 660px; margin: 0 auto; padding: 2rem 1.5rem 0; }
+    .schedule-list { list-style: none; position: relative; }
+    .schedule-list::before {
+      content: ''; position: absolute; left: 1.45rem;
+      top: 1rem; bottom: 1rem; width: 1px; background: var(--border);
+    }
+    .schedule-item { display: grid; grid-template-columns: 2.9rem 1fr; gap: 0 1.1rem; padding: 0.85rem 0; }
+    .s-dot-col { display: flex; justify-content: center; align-items: flex-start; padding-top: 0.2rem; position: relative; z-index: 1; }
+    .s-dot { width: 13px; height: 13px; border-radius: 50%; background: var(--cream); border: 2.5px solid var(--violet); }
+    .s-time { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.12rem; text-transform: uppercase; }
+    .s-label { font-size: 1rem; font-weight: 600; color: var(--text); }
+    .s-desc  { font-size: 0.84rem; color: var(--muted); margin-top: 0.1rem; }
+    .s-leader {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      font-size: 0.75rem; font-weight: 600;
+      color: var(--violet); margin-top: 0.3rem;
+      background: var(--violet-soft); padding: 0.2rem 0.55rem;
+      border-radius: 99px;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      max-width: 660px; margin: 2rem auto 0;
+      padding: 1.4rem 1.5rem 3rem;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 0.75rem;
+    }
+    .footer-info .name   { font-weight: 600; font-size: 0.9rem; color: var(--text); }
+    .footer-info .detail { font-size: 0.8rem; color: var(--muted); margin-top: 0.1rem; }
+    .welcome-badge {
+      background: var(--violet-soft); color: var(--violet);
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.07em;
+      text-transform: uppercase; padding: 0.38rem 0.9rem; border-radius: 99px;
+    }
+
+    @media (max-width: 480px) {
+      .hero { padding: 2.25rem 1.25rem; }
+      .content, .schedule-section, .footer { padding-left: 1.1rem; padding-right: 1.1rem; }
+    }
+    @media print {
+      body { background: white; }
+      .hero { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════
+     CONFIG — paste your Google Sheet ID here (one place only)
+     Sheet must be shared: Anyone with the link → Viewer
+     ════════════════════════════════════════════════════════════ -->
+<script>
+  const SHEET_ID = 'YOUR_GOOGLE_SHEET_ID_HERE';
+  // ↑ Find this in your Sheet URL:
+  //   https://docs.google.com/spreadsheets/d/<<THIS PART>>/edit
+</script>
+
+<!-- page skeleton — JS fills these in -->
+<header class="hero" style="display:none" id="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">Sunday Evening</p>
+    <h1 class="church-name" id="js-church"></h1>
+    <p  class="group-name"  id="js-group"></p>
+    <div class="hero-rule"></div>
+    <div class="hero-meta"  id="js-meta"></div>
+  </div>
+</header>
+
+<div id="loading" class="state-overlay">
+  <div class="spinner"></div>
+  <p>Loading meeting info…</p>
+</div>
+
+<div id="error" class="state-overlay" style="display:none; padding: 2rem;">
+  <div class="error-box">
+    <strong>Couldn't load the schedule</strong>
+    <p id="error-msg"></p>
+  </div>
+</div>
+
+<div id="page-content" style="display:none">
+  <div class="content">
+    <p class="section-eyebrow">This week's discussion</p>
+    <div class="topic-card">
+      <h2 class="topic-title"   id="js-topic-title"></h2>
+      <p  class="topic-subtitle" id="js-topic-sub"></p>
+      <p  class="topic-desc"     id="js-topic-desc"></p>
+    </div>
+  </div>
+
+  <section class="schedule-section">
+    <p class="section-eyebrow" style="margin-top:0.4rem">Tonight's schedule</p>
+    <ul class="schedule-list" id="js-schedule"></ul>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-info">
+      <p class="name"   id="js-footer-name"></p>
+      <p class="detail" id="js-footer-detail"></p>
+    </div>
+    <span class="welcome-badge">All are welcome</span>
+  </footer>
+</div>
+
+<script>
+// ── CSV helpers ─────────────────────────────────────────────────────
+function parseCSVRow(line) {
+  const result = []; let cur = '', inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    if (line[i] === '"') {
+      if (inQ && line[i+1] === '"') { cur += '"'; i++; }
+      else inQ = !inQ;
+    } else if (line[i] === ',' && !inQ) { result.push(cur); cur = ''; }
+    else cur += line[i];
+  }
+  result.push(cur);
+  return result.map(s => s.trim());
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n').filter(Boolean);
+  const headers = parseCSVRow(lines[0]);
+  return lines.slice(1).map(line => {
+    const vals = parseCSVRow(line);
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = vals[i] || '');
+    return obj;
+  });
+}
+
+async function fetchSheet(sheetName) {
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HTTP ${res.status} loading "${sheetName}" tab`);
+  return parseCSV(await res.text());
+}
+
+// ── Render helpers ──────────────────────────────────────────────────
+function chip(text) {
+  const el = document.createElement('span');
+  el.className = 'meta-chip';
+  el.innerHTML = `<span class="meta-chip-dot"></span>${text}`;
+  return el;
+}
+
+function scheduleItem(row) {
+  const li = document.createElement('li');
+  li.className = 'schedule-item';
+  const leaderHTML = row.Leader
+    ? `<span class="s-leader">👤 ${row.Leader}</span>`
+    : '';
+  li.innerHTML = `
+    <div class="s-dot-col"><div class="s-dot"></div></div>
+    <div>
+      <p class="s-time">${row.Time}</p>
+      <p class="s-label">${row.Label}</p>
+      <p class="s-desc">${row.Description}</p>
+      ${leaderHTML}
+    </div>`;
+  return li;
+}
+
+// ── Main load ───────────────────────────────────────────────────────
+async function load() {
+  try {
+    if (!SHEET_ID || SHEET_ID === 'YOUR_GOOGLE_SHEET_ID_HERE') {
+      throw new Error('Open the HTML file and replace YOUR_GOOGLE_SHEET_ID_HERE with your actual Google Sheet ID.');
+    }
+
+    const [meetingRows, scheduleRows] = await Promise.all([
+      fetchSheet('Meeting'),
+      fetchSheet('Schedule')
+    ]);
+
+    // Meeting tab is key→value pairs
+    const m = {};
+    meetingRows.forEach(r => { if (r.Field) m[r.Field] = r.Value; });
+
+    // Populate hero
+    document.title = `${m.group || 'Student Fellowship'} — ${m.church || ''}`;
+    document.getElementById('js-church').textContent = m.church || '';
+    document.getElementById('js-group').textContent  = m.group  || '';
+
+    const metaEl = document.getElementById('js-meta');
+    [m.date, m.time, m.location].filter(Boolean).forEach(t => metaEl.appendChild(chip(t)));
+
+    // Topic
+    document.getElementById('js-topic-title').textContent = m.topic        || '';
+    document.getElementById('js-topic-sub').textContent   = m.topicSubtitle || '';
+    document.getElementById('js-topic-desc').textContent  = m.topicDesc    || '';
+
+    // Schedule
+    const listEl = document.getElementById('js-schedule');
+    scheduleRows.forEach(row => listEl.appendChild(scheduleItem(row)));
+
+    // Footer
+    document.getElementById('js-footer-name').textContent = m.church || '';
+    const detail = [m.contact, m.contactEmail].filter(Boolean).join(' · ');
+    document.getElementById('js-footer-detail').textContent = detail;
+
+    // Show page
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('hero').style.display    = '';
+    document.getElementById('page-content').style.display = '';
+
+  } catch (err) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('error').style.display   = 'flex';
+    document.getElementById('error-msg').textContent =
+      err.message + '\n\nMake sure the sheet is shared as "Anyone with the link → Viewer".';
+  }
+}
+
+load();
+</script>
+</body>
+</html>
