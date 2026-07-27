@@ -5,27 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Fellowship</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --navy:         #0F172A;
-      --violet:       #7C3AED;
-      --violet-light: #C4B5FD;
-      --violet-soft:  #EDE9FE;
-      --cream:        #FAFAF9;
-      --white:        #FFFFFF;
-      --text:         #1C1917;
-      --muted:        #78716C;
-      --border:       #E7E5E4;
+      --ink:      #0A0912;
+      --ink-2:    #150F26;
+      --ink-3:    #1D1638;
+      --violet:   #8B2FF0;
+      --magenta:  #FF2E7E;
+      --acid:     #FFD23F;
+      --paper:    #F5F2FF;
+      --muted:    #B3A6D9;
+      --line:     rgba(245,242,255,0.12);
     }
 
+    html, body { background: var(--ink); }
     body {
-      font-family: 'DM Sans', system-ui, sans-serif;
-      background: var(--cream);
-      color: var(--text);
+      font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+      color: var(--paper);
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
     /* ── LOADING / ERROR ── */
@@ -34,143 +35,240 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 60vh;
+      min-height: 70vh;
       gap: 1rem;
       color: var(--muted);
       font-size: 0.9rem;
     }
     .spinner {
       width: 32px; height: 32px;
-      border: 3px solid var(--border);
-      border-top-color: var(--violet);
+      border: 3px solid var(--line);
+      border-top-color: var(--magenta);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
     .error-box {
-      background: #FEF2F2;
-      border: 1px solid #FECACA;
+      background: var(--ink-2);
+      border: 1px solid rgba(255,46,126,0.35);
       border-radius: 10px;
       padding: 1.25rem 1.5rem;
       max-width: 480px;
       margin: 0 auto;
       text-align: center;
     }
-    .error-box strong { color: #991B1B; display: block; margin-bottom: 0.4rem; }
-    .error-box p { color: #7F1D1D; font-size: 0.85rem; line-height: 1.5; }
+    .error-box strong { color: var(--magenta); display: block; margin-bottom: 0.4rem; }
+    .error-box p { color: var(--muted); font-size: 0.85rem; line-height: 1.5; white-space: pre-line; }
 
-    /* ── HERO ── */
+    /* ── HERO ───────────────────────────────────────────── */
     .hero {
-      background: var(--navy);
-      color: var(--white);
-      padding: 3rem 2rem 2.75rem;
       position: relative;
+      min-height: 78vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3rem 1.75rem 3.5rem;
       overflow: hidden;
+      background-color: var(--ink);
+      background-image:
+        radial-gradient(ellipse 70% 55% at center, rgba(255,46,126,0.28) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 60% at center, rgba(139,47,240,0.35) 0%, transparent 65%);
+      background-repeat: no-repeat;
+      background-size: 160% 160%, 150% 150%;
+      background-position: 88% 2%, 6% 96%;
+      animation: heroDrift 18s ease-in-out infinite alternate;
     }
-    .hero::after {
-      content: '';
-      position: absolute; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg width='36' height='36' viewBox='0 0 36 36' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M18 10v16M10 18h16' stroke='%237C3AED' stroke-width='1.2' stroke-opacity='0.18' stroke-linecap='round'/%3E%3C/svg%3E");
-      pointer-events: none;
+    @keyframes heroDrift {
+      0%   { background-position: 88% 2%,  6% 96%; }
+      50%  { background-position: 70% 14%, 22% 82%; }
+      100% { background-position: 80% -6%, 12% 104%; }
     }
+
+    /* halftone dot field */
     .hero::before {
       content: '';
       position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 60% 80% at 10% 60%, rgba(124,58,237,0.18) 0%, transparent 65%),
-        radial-gradient(ellipse 40% 50% at 85% 15%, rgba(124,58,237,0.12) 0%, transparent 55%);
+      background-image: radial-gradient(rgba(245,242,255,0.14) 1.1px, transparent 1.1px);
+      background-size: 14px 14px;
+      -webkit-mask-image: linear-gradient(115deg, transparent 30%, black 55%, transparent 78%);
+              mask-image: linear-gradient(115deg, transparent 30%, black 55%, transparent 78%);
       pointer-events: none;
     }
-    .hero-inner { position: relative; z-index: 1; max-width: 660px; margin: 0 auto; }
-    .eyebrow {
-      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em;
-      text-transform: uppercase; color: var(--violet-light); margin-bottom: 0.9rem;
-    }
-    .church-name {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(2.1rem, 8vw, 3.6rem);
-      font-weight: 900; line-height: 1.04; color: #FFF;
-    }
-    .group-name {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(1rem, 3.5vw, 1.4rem);
-      font-style: italic; font-weight: 700;
-      color: var(--violet-light); margin-top: 0.35rem;
-    }
-    .hero-rule { width: 2.75rem; height: 3px; background: var(--violet); border-radius: 2px; margin: 1.6rem 0; }
-    .hero-meta { display: flex; flex-wrap: wrap; gap: 0.6rem 1rem; }
-    .meta-chip {
-      display: flex; align-items: center; gap: 0.45rem;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.11);
-      border-radius: 99px; padding: 0.32rem 0.85rem;
-      font-size: 0.83rem; font-weight: 500; color: rgba(255,255,255,0.88);
-    }
-    .meta-chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--violet); flex-shrink: 0; }
 
-    /* ── TOPIC ── */
-    .content { max-width: 660px; margin: 0 auto; padding: 2rem 1.5rem 0; }
-    .section-eyebrow {
-      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 0.7rem;
+    /* comic speed-lines bursting from behind title */
+    .speed-lines { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .speed-lines i {
+      position: absolute;
+      right: -10%;
+      top: 50%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(255,210,63,0.55) 40%, transparent);
+      transform-origin: right center;
+      opacity: 0;
+      animation: zap 900ms cubic-bezier(.2,.8,.2,1) forwards;
     }
-    .topic-card {
-      background: var(--white); border-radius: 14px;
-      border-left: 4px solid var(--violet); padding: 1.5rem;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 4px 20px rgba(0,0,0,0.05);
+    @keyframes zap {
+      0%   { opacity: 0; transform: translateX(30px) scaleX(0.3); }
+      35%  { opacity: 1; }
+      100% { opacity: 0; transform: translateX(-40vw) scaleX(1); }
+    }
+
+    .eyebrow-row {
+      position: relative; z-index: 1;
+      display: flex; align-items: center; gap: .6rem;
+      margin-bottom: 1.1rem;
+      opacity: 0;
+      animation: riseIn 560ms 900ms cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .eyebrow-bolt {
+      width: 9px; height: 9px; background: var(--acid);
+      clip-path: polygon(50% 0,100% 38%,68% 38%,100% 100%,0 62%,32% 62%);
+      flex-shrink: 0;
+    }
+    .eyebrow {
+      font-size: .72rem; font-weight: 700; letter-spacing: .24em;
+      text-transform: uppercase; color: var(--acid);
+    }
+
+    .title-wrap { position: relative; z-index: 1; overflow: hidden; padding: .2rem 0; }
+    .church-name {
+      font-family: 'Segoe UI Black', 'Arial Black', system-ui, sans-serif;
+      font-weight: 900;
+      text-transform: uppercase;
+      font-size: clamp(2.6rem, 12vw, 5.2rem);
+      line-height: .92;
+      letter-spacing: -.01em;
+      display: inline-block;
+      background: linear-gradient(100deg, var(--paper) 0%, var(--paper) 30%, var(--magenta) 65%, var(--violet) 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      filter: drop-shadow(3px 3px 0 rgba(139,47,240,0.9)) drop-shadow(6px 6px 0 rgba(10,9,18,0.9));
+      transform: translateX(140%) skewX(-11deg) scale(1.05);
+      animation: slamIn 780ms 120ms cubic-bezier(.16,.9,.24,1.05) forwards;
+    }
+    @keyframes slamIn {
+      0%   { transform: translateX(140%) skewX(-11deg) scale(1.05); }
+      65%  { transform: translateX(-2%) skewX(-9deg) scale(1); }
+      82%  { transform: translateX(1.2%) skewX(-9deg) scale(1); }
+      100% { transform: translateX(0) skewX(-9deg) scale(1); }
+    }
+
+    .group-name {
+      position: relative; z-index: 1;
+      font-size: clamp(1rem, 3.5vw, 1.35rem);
+      font-weight: 700; font-style: italic;
+      letter-spacing: .01em;
+      color: var(--paper);
+      margin-top: .5rem;
+      padding-left: .15rem;
+      opacity: 0;
+      animation: riseIn 560ms 760ms cubic-bezier(.16,1,.3,1) forwards;
+    }
+
+    @keyframes riseIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+    .hero-meta { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1.75rem; }
+    .meta-chip {
+      display: flex; align-items: center; gap: .4rem;
+      background: var(--ink-3);
+      border: 1px solid var(--line);
+      clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+      padding: .4rem 1rem .4rem .8rem;
+      font-size: .83rem; font-weight: 600; color: var(--paper);
+      opacity: 0;
+      animation: chipIn 460ms cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .meta-chip:nth-child(1) { animation-delay: 1020ms }
+    .meta-chip:nth-child(2) { animation-delay: 1090ms }
+    .meta-chip:nth-child(3) { animation-delay: 1160ms }
+    @keyframes chipIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── TOPIC ──────────────────────────────────────────── */
+    .content { max-width: 640px; margin: 0 auto; padding: 2.75rem 1.5rem 0; }
+    .panel-label {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .72rem; font-weight: 800; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--magenta);
+      margin-bottom: .9rem;
+    }
+    .panel-label::before { content: ''; width: 18px; height: 3px; background: var(--magenta); }
+
+    .topic-panel {
+      position: relative;
+      background: var(--ink-2);
+      border: 1px solid var(--line);
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
+      padding: 1.6rem 1.6rem 1.8rem;
+    }
+    .topic-panel::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
+      background: linear-gradient(180deg, var(--magenta), var(--violet));
     }
     .topic-title {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(1.45rem, 4.5vw, 2rem);
-      font-style: italic; font-weight: 700;
-      color: var(--text); line-height: 1.2;
+      font-family: 'Segoe UI Black', 'Arial Black', system-ui, sans-serif;
+      font-weight: 900; text-transform: uppercase;
+      font-size: clamp(1.5rem, 5.5vw, 2.1rem);
+      line-height: 1.05; letter-spacing: -.005em;
+      transform: skewX(-6deg); display: inline-block;
+      color: var(--paper);
     }
-    .topic-subtitle { font-size: 0.88rem; font-weight: 500; color: var(--violet); margin-top: 0.3rem; }
+    .topic-subtitle { font-size: .85rem; font-weight: 700; color: var(--acid); margin-top: .5rem; letter-spacing: .02em; }
     .topic-desc {
-      font-size: 0.93rem; color: var(--muted); line-height: 1.65;
-      margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--border);
+      font-size: .92rem; color: var(--muted); line-height: 1.65;
+      margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--line);
     }
 
-    /* ── SCHEDULE ── */
-    .schedule-section { max-width: 660px; margin: 0 auto; padding: 2rem 1.5rem 0; }
-    .schedule-list { list-style: none; position: relative; }
-    .schedule-list::before {
-      content: ''; position: absolute; left: 1.45rem;
-      top: 1rem; bottom: 1rem; width: 1px; background: var(--border);
+    /* ── SCHEDULE ───────────────────────────────────────── */
+    .schedule-section { max-width: 640px; margin: 0 auto; padding: 2.5rem 1.5rem 0; }
+    .schedule-list { list-style: none; }
+    .schedule-item {
+      display: grid; grid-template-columns: 3.4rem 1fr;
+      padding: 1rem 0; border-bottom: 1px solid var(--line);
     }
-    .schedule-item { display: grid; grid-template-columns: 2.9rem 1fr; gap: 0 1.1rem; padding: 0.85rem 0; }
-    .s-dot-col { display: flex; justify-content: center; align-items: flex-start; padding-top: 0.2rem; position: relative; z-index: 1; }
-    .s-dot { width: 13px; height: 13px; border-radius: 50%; background: var(--cream); border: 2.5px solid var(--violet); }
-    .s-time { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.12rem; text-transform: uppercase; }
-    .s-label { font-size: 1rem; font-weight: 600; color: var(--text); }
-    .s-desc  { font-size: 0.84rem; color: var(--muted); margin-top: 0.1rem; }
+    .schedule-item:last-child { border-bottom: none; }
+    .s-num {
+      font-family: 'Segoe UI Black', 'Arial Black', system-ui, sans-serif;
+      font-weight: 900; font-size: 1.6rem; font-style: italic;
+      color: transparent;
+      -webkit-text-stroke: 1.4px var(--violet);
+      align-self: start;
+    }
+    .s-time { font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--magenta); }
+    .s-label { font-size: 1.02rem; font-weight: 800; color: var(--paper); margin-top: .15rem; }
+    .s-desc  { font-size: .85rem; color: var(--muted); margin-top: .25rem; }
     .s-leader {
-      display: inline-flex; align-items: center; gap: 0.3rem;
-      font-size: 0.75rem; font-weight: 600;
-      color: var(--violet); margin-top: 0.3rem;
-      background: var(--violet-soft); padding: 0.2rem 0.55rem;
-      border-radius: 99px;
+      display: inline-flex; margin-top: .45rem;
+      font-size: .72rem; font-weight: 800; letter-spacing: .03em;
+      color: var(--ink); background: var(--acid);
+      padding: .2rem .6rem;
+      clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
     }
 
-    /* ── FOOTER ── */
+    /* ── FOOTER ─────────────────────────────────────────── */
     .footer {
-      max-width: 660px; margin: 2rem auto 0;
-      padding: 1.4rem 1.5rem 3rem;
-      border-top: 1px solid var(--border);
+      max-width: 640px; margin: 2.75rem auto 0;
+      padding: 1.5rem 1.5rem 3rem;
+      border-top: 1px solid var(--line);
       display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 0.75rem;
+      flex-wrap: wrap; gap: .75rem;
     }
-    .footer-info .name   { font-weight: 600; font-size: 0.9rem; color: var(--text); }
-    .footer-info .detail { font-size: 0.8rem; color: var(--muted); margin-top: 0.1rem; }
+    .footer-info .name   { font-weight: 800; font-size: .92rem; color: var(--paper); }
+    .footer-info .detail { font-size: .8rem; color: var(--muted); margin-top: .1rem; }
     .welcome-badge {
-      background: var(--violet-soft); color: var(--violet);
-      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.07em;
-      text-transform: uppercase; padding: 0.38rem 0.9rem; border-radius: 99px;
+      background: linear-gradient(100deg, var(--violet), var(--magenta));
+      color: var(--paper); font-size: .72rem; font-weight: 800; letter-spacing: .08em;
+      text-transform: uppercase; padding: .4rem 1rem;
+      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
     }
 
     @media (max-width: 480px) {
-      .hero { padding: 2.25rem 1.25rem; }
+      .hero { padding: 2.25rem 1.25rem; min-height: 70vh; }
       .content, .schedule-section, .footer { padding-left: 1.1rem; padding-right: 1.1rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .church-name, .group-name, .eyebrow-row, .meta-chip, .speed-lines i, .hero {
+        animation: none !important; opacity: 1 !important; transform: none !important;
+      }
     }
     @media print {
       body { background: white; }
@@ -192,13 +290,24 @@
 
 <!-- page skeleton — JS fills these in -->
 <header class="hero" style="display:none" id="hero">
-  <div class="hero-inner">
-    <p class="eyebrow">Sunday Evening</p>
-    <h1 class="church-name" id="js-church"></h1>
-    <p  class="group-name"  id="js-group"></p>
-    <div class="hero-rule"></div>
-    <div class="hero-meta"  id="js-meta"></div>
+  <div class="speed-lines">
+    <i style="top:22%; width:60%; animation-delay:80ms"></i>
+    <i style="top:38%; width:75%; animation-delay:160ms"></i>
+    <i style="top:58%; width:50%; animation-delay:40ms"></i>
+    <i style="top:72%; width:68%; animation-delay:200ms"></i>
   </div>
+
+  <div class="eyebrow-row">
+    <span class="eyebrow-bolt"></span>
+    <span class="eyebrow">Sunday Evening</span>
+  </div>
+
+  <div class="title-wrap">
+    <span class="church-name" id="js-church"></span>
+  </div>
+  <p class="group-name" id="js-group"></p>
+
+  <div class="hero-meta" id="js-meta"></div>
 </header>
 
 <div id="loading" class="state-overlay">
@@ -215,8 +324,8 @@
 
 <div id="page-content" style="display:none">
   <div class="content">
-    <p class="section-eyebrow">This week's discussion</p>
-    <div class="topic-card">
+    <p class="panel-label">This week's discussion</p>
+    <div class="topic-panel">
       <h2 class="topic-title"   id="js-topic-title"></h2>
       <p  class="topic-subtitle" id="js-topic-sub"></p>
       <p  class="topic-desc"     id="js-topic-desc"></p>
@@ -224,7 +333,7 @@
   </div>
 
   <section class="schedule-section">
-    <p class="section-eyebrow" style="margin-top:0.4rem">Tonight's schedule</p>
+    <p class="panel-label" style="margin-top:0.4rem">Tonight's lineup</p>
     <ul class="schedule-list" id="js-schedule"></ul>
   </section>
 
@@ -246,7 +355,7 @@ function parseCSVRow(line) {
       if (inQ && line[i+1] === '"') { cur += '"'; i++; }
       else inQ = !inQ;
     } else if (line[i] === ',' && !inQ) { result.push(cur); cur = ''; }
-    else cur += line[i];
+   else cur += line[i];
   }
   result.push(cur);
   return result.map(s => s.trim());
@@ -274,18 +383,19 @@ async function fetchSheet(sheetName) {
 function chip(text) {
   const el = document.createElement('span');
   el.className = 'meta-chip';
-  el.innerHTML = `<span class="meta-chip-dot"></span>${text}`;
+  el.textContent = text;
   return el;
 }
 
-function scheduleItem(row) {
+function scheduleItem(row, index) {
   const li = document.createElement('li');
   li.className = 'schedule-item';
+  const num = String(index + 1).padStart(2, '0');
   const leaderHTML = row.Leader
     ? `<span class="s-leader">👤 ${row.Leader}</span>`
     : '';
   li.innerHTML = `
-    <div class="s-dot-col"><div class="s-dot"></div></div>
+    <span class="s-num">${num}</span>
     <div>
       <p class="s-time">${row.Time}</p>
       <p class="s-label">${row.Label}</p>
@@ -326,7 +436,7 @@ async function load() {
 
     // Schedule
     const listEl = document.getElementById('js-schedule');
-    scheduleRows.forEach(row => listEl.appendChild(scheduleItem(row)));
+    scheduleRows.forEach((row, i) => listEl.appendChild(scheduleItem(row, i)));
 
     // Footer
     document.getElementById('js-footer-name').textContent = m.church || '';
