@@ -261,6 +261,39 @@
       clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
     }
 
+    /* ── SHARE / QR ─────────────────────────────────────── */
+    .share-section { max-width: 640px; margin: 0 auto; padding: 0 1.5rem 3.5rem; }
+    .qr-panel {
+      position: relative;
+      display: flex; align-items: center; gap: 1.25rem;
+      background: var(--ink-2);
+      border: 1px solid var(--line);
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
+      padding: 1.4rem 1.6rem;
+    }
+    .qr-panel::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
+      background: linear-gradient(180deg, var(--violet), var(--magenta));
+    }
+    .qr-code-img {
+      flex-shrink: 0;
+      width: 108px; height: 108px;
+      background: var(--paper);
+      padding: 6px;
+      border-radius: 4px;
+    }
+    .qr-copy .panel-label { margin-bottom: .5rem; }
+    .qr-caption { font-size: .85rem; color: var(--muted); line-height: 1.5; }
+    .qr-link {
+      display: inline-block; margin-top: .4rem;
+      font-size: .78rem; font-weight: 700; color: var(--paper);
+      word-break: break-all;
+    }
+    @media (max-width: 480px) {
+      .qr-panel { flex-direction: column; align-items: flex-start; text-align: left; }
+    }
+
     @media (max-width: 480px) {
       .hero { padding: 2.25rem 1.25rem; min-height: 70vh; }
       .content, .schedule-section, .footer { padding-left: 1.1rem; padding-right: 1.1rem; }
@@ -344,6 +377,23 @@
     </div>
     <span class="welcome-badge">All are welcome</span>
   </footer>
+
+  <section class="share-section">
+    <p class="panel-label">Share this flyer</p>
+    <div class="qr-panel">
+      <img
+        class="qr-code-img"
+        src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=8&color=150F26&bgcolor=F5F2FF&data=https%3A%2F%2Fthegreenbot.github.io%2Fupperroom-flyer%2F"
+        alt="QR code linking to this flyer"
+        width="108" height="108"
+        loading="lazy"
+      >
+      <div class="qr-copy">
+        <p class="qr-caption">Scan to pull this page up on your phone and pass it along.</p>
+        <a class="qr-link" href="https://thegreenbot.github.io/upperroom-flyer/">thegreenbot.github.io/upperroom-flyer</a>
+      </div>
+    </div>
+  </section>
 </div>
 
 <script>
